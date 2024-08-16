@@ -32,8 +32,12 @@ public class IOU {
     this.dateTime = dateTime;
   }
 
+  // Define a default UUID
+  private static final UUID DEFAULT_UUID = UUID.fromString("00000000-0000-0000-0000-000000000000");
+
+  // Getters and setters
   public UUID getId() {
-    return this.id;
+    return this.id != null ? id : DEFAULT_UUID;
   }
   
   public String getBorrower() {
