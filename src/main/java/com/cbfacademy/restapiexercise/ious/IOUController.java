@@ -1,6 +1,7 @@
 package com.cbfacademy.restapiexercise;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,9 +39,14 @@ public class IOUController {
   }
 
   // Retrieve a specific IOU by its ID
-  @GetMapping(path = "/{id}", produces = "application/json")
-  public IOU getIou(@PathVariable UUID id) {
-    return iouService.getIOU(id);
+  @GetMapping("/{id}")
+  public ResponseEntity<IOU> getIOUById(@PathVariable UUID id) {
+      try {
+          IOU iou = iouService.getIOU(id);
+          return new ResponseEntity<>(iou, HttpStatus.OK);
+      } catch (NoSuchElementException e) {
+          return new ResponseEntity<>( HttpStatus.NOT_FOUND);
+      }
   }
 
   // Create a new IOU
@@ -53,23 +59,25 @@ public class IOUController {
 
   // Update an existing IOU by its ID
   @PutMapping(path = "/{id}", produces = "application/json")
-  public IOU updateIou(@PathVariable UUID id, @RequestBody IOU iou) {
-    return iouService.updateIOU(id, iou);
+  public ResponseEntity<IOU> updateIou(@PathVariable UUID id, @RequestBody IOU iou) {
+    try {
+      IOU existingIou = iouService.updateIOU(id, iou);
+      return new ResponseEntity<>(existingIou, HttpStatus.OK);
+    } catch (NoSuchElementException e) {
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
   }
 
-  // Delete an existing IOU by its ID
-  @DeleteMapping(path = "/{id}")
+
+// Delete an existing IOU by its ID
+  @DeleteMapping(path = "/{id}", produces = "application/json")
   public ResponseEntity<Void> deleteIou(@PathVariable UUID id) {
-    iouService.deleteIOU(id);
-    return new ResponseEntity<>(HttpStatus.NO_CONTENT).notFound().build();
-    
-  }
-
-  // @DeleteMapping(path = "/{id}")
-  // public void deleteIou(@PathVariable UUID id) {
-  //   iouService.deleteIOU(id);
-  // }
-
-
+    try {
+        iouService.deleteIOU(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    } catch (NoSuchElementException e) {
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+}
   
 }
