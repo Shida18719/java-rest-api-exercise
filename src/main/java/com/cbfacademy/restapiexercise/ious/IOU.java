@@ -39,6 +39,11 @@ public class IOU {
   public UUID getId() {
     return this.id != null ? id : DEFAULT_UUID;
   }
+
+  // Initialize IOU object with a UUID
+  public void getId(UUID id) {
+    this.id = id;
+  }
   
   public String getBorrower() {
     return this.borrower;
