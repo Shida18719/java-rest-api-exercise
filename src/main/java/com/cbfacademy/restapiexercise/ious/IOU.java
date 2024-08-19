@@ -25,24 +25,18 @@ public class IOU {
     this(null, null, BigDecimal.ZERO, Instant.now());
   }
   
+  // Parameterized constructor
   public IOU(String borrower, String lender, BigDecimal amount, Instant dateTime) {
+    this.id = UUID.randomUUID();  // Initialize with a random UUID
     this.borrower = borrower;
     this.lender = lender;
     this.amount = amount;
     this.dateTime = dateTime;
   }
 
-  // Define a default UUID
-  private static final UUID DEFAULT_UUID = UUID.fromString("00000000-0000-0000-0000-000000000000");
-
-  // Getters and setters
+  // Getters for returning the id 
   public UUID getId() {
-    return this.id != null ? id : DEFAULT_UUID;
-  }
-
-  // Initialize IOU object with a UUID
-  public void getId(UUID id) {
-    this.id = id;
+    return this.id;
   }
   
   public String getBorrower() {
